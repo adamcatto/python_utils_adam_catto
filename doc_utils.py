@@ -40,14 +40,20 @@ def latex_matrix_to_np_array(mat_str, num_cols=None, from_source=True):
         return _pdf_latex_matrix_to_np_array(mat_str, num_cols)
 
 
-def np_array_to_latex_matrix(arr):
-    mat_str = '\\begin{bmatrix}\n'
+def np_array_to_latex_matrix(arr, already_in_math_mode=False):
+    if not already_in_math_mode:
+        mat_str = '\['
+    else:
+        mat_str = ''
+    mat_str += '\\begin{bmatrix}\n'
     for row in arr:
         temp_str = ''
         for elem in row:
-            temp_str += str(elem) + ' &'
-        temp_str = temp_str[0: -1] + '\\\\\n'
+            temp_str += str(elem) + ' & '
+        temp_str = temp_str[0: -2] + '\\\\\n'
         mat_str += temp_str
         
     mat_str += '\\end{bmatrix}'
+    if not already_in_math_mode:
+        mat_str += '\]'
     return mat_str
