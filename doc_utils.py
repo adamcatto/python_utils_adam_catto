@@ -2,6 +2,7 @@ from ast import literal_eval
 from typing import Text
 
 import numpy as np
+import pandas as pd
 
 
 def _source_code_latex_matrix_to_np_array(mat_str):
@@ -57,3 +58,26 @@ def np_array_to_latex_matrix(arr, already_in_math_mode=False):
     if not already_in_math_mode:
         mat_str += '\]'
     return mat_str
+
+
+def pandas_df_to_latex_table(df):
+    cols = [str(df.index.name)] + [str(x) for x in df.columns]
+    print(cols)
+    n_cols = len(cols)
+
+    table_str = ''
+
+    table_str += '\\begin{center}\n'
+    table_str += '\\begin{tabular}{||' + 'c|' * (n_cols + 1) + '|}\n'
+    table_str += '\hline\n'
+    table_str += ' & '.join(cols) + '\\\\\n'
+    table_str += '\hline\hline\n'
+    for row in df.itertuples():
+        print(np.array(row).astype(str))
+        table_str += ' & '.join(np.array(row).astype(str)) + '\\\\\n'
+        table_str += '\hline\n'
+
+    table_str += '\\end{tabular}\n'
+    table_str += '\\end{center}'
+
+    return table_str
